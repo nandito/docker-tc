@@ -86,6 +86,10 @@ while read DOCKER_EVENT; do
             netm_add_rule "corrupt" "$CORRUPT" "corrupt"
             netm_add_rule "duplicate" "$DUPLICATION" "duplicate"
             netm_add_rule "reorder" "$REORDERING" "reorder"
+            if [[ -n "$NETM_OPTIONS" || -n "$LIMIT" ]]; then
+                echo "[DEBUG] set up mirred"
+                qdisc_set_mirred "$NETWORK_INTERFACE_NAME"
+            fi
             OPTIONS_LOG=$(echo "$OPTIONS_LOG" | sed 's/[, ]*$//')
             log "Set ${OPTIONS_LOG} on $NETWORK_INTERFACE_NAME"
             qdisc_netm "$NETWORK_INTERFACE_NAME" $NETM_OPTIONS

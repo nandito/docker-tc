@@ -32,6 +32,9 @@ qdisc_tbf() {
     qdisc_next
 }
 qdisc_set_mirred() {
+    # clear previous configuration
+    tc qdisc del dev ifb0 root
+    # add new configuration
     IF="$1"
     tc qdisc add dev "$IF" ingress
     echo "[DEBUG] tc qdisc add dev "$IF" ingress"

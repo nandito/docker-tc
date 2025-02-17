@@ -33,7 +33,9 @@ qdisc_tbf() {
 }
 qdisc_set_mirred() {
     # clear previous configuration
-    tc qdisc del dev ifb0 root
+    if ! tc qdisc del dev ifb0 root 2>/dev/null; then
+        echo "[WARN] tc qdisc del dev ifb0 root failed. Maybe it's already cleared."
+    fi
     # add new configuration
     IF="$1"
     tc qdisc add dev "$IF" ingress
